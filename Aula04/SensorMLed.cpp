@@ -31,6 +31,9 @@ somente no modo manual
 l = ligar ventilador
 d = desligar ventilador
 
+i ++
+d --
+
 */
 
 // temperatura
@@ -40,6 +43,7 @@ char recebido;
 char modo;
 int fl = 0;
 int ff = 0;
+int Num = 5;
 // char nome[] = "bla"
 
 DHT dht(DHTPIN, DHTTYPE);
@@ -119,7 +123,7 @@ void loop()
         Serial.println("a");
         fl = 1;
     }
-    if(modo == 'a' && t  < (TempMax -2) && fl == 1)
+    if(modo == 'a' && t  < (TempMax -Num) && fl == 1)
     {
         fl = 0;
         digitalWrite(Led, 0);
@@ -143,13 +147,13 @@ void loop()
     {
         TempMax += 1;
     }
-    if (recebido == 'n')
+    if (recebido == 'n'  && TempMin + 3 < TempMax )
     {
         TempMax -= 1;
     }
     //--------------------------------------------------------------//
 
-    if (recebido == 'B')
+    if (recebido == 'B' && TempMin > TempMax - 3)
     {
         TempMin += 1;
     }
@@ -168,4 +172,12 @@ void loop()
     }
 
     //--------------------------------------------------------------//
+      if (recebido == 'i')
+    {
+        Num += 1;
+    }
+    if (recebido == 'd' && Num > 1)
+    {
+        Num -= 1;
+    }
 }
